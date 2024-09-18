@@ -96,4 +96,22 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 修改员工状态
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation(("改变员工状态"))
+    public Result changeStatus(@PathVariable Integer status, @RequestParam Long id){
+        /**
+         * 接口中使用包装类优于基础类型-
+         *      通过null区分是否传递数值
+         *      泛型只能使用包装类 一致性
+         */
+        employeeService.changeStatusById(status, id);
+        return Result.success();
+    }
+
 }
