@@ -10,13 +10,13 @@ import java.util.List;
 public interface CategoryService {
 
     /**
-     * 新增菜品分类
+     * 新增分类
      * @param categoryDTO
      */
     void add(CategoryDTO categoryDTO);
 
     /**
-     * 分页查询菜品分类
+     * 分页查询分类
      * @param categoryPageQueryDTO
      * @return
      */
@@ -29,7 +29,7 @@ public interface CategoryService {
     void deleteById(Long id);
 
     /**
-     * 修改菜品分类
+     * 修改分类
      * @param categoryDTO
      */
     void update(CategoryDTO categoryDTO);

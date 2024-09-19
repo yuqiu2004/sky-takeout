@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@Api("菜品分类管理")
+@Api("分类管理")
 @RequestMapping("/admin/category")
 @Slf4j
 public class CategoryController {
@@ -24,7 +24,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * 新增菜品分类
+     * 新增分类
      * @param categoryDTO
      * @return
      */
@@ -36,12 +36,12 @@ public class CategoryController {
     }
 
     /**
-     * 分页查询菜品分类
+     * 分页查询分类
      * @param categoryPageQueryDTO
      * @return
      */
     @GetMapping("/page")
-    @ApiOperation("菜品分类分页查询")
+    @ApiOperation("分类分页查询")
     public Result query(CategoryPageQueryDTO categoryPageQueryDTO){
         PageResult pageResult = categoryService.query(categoryPageQueryDTO);
         return Result.success(pageResult);
@@ -60,28 +60,33 @@ public class CategoryController {
     }
 
     /**
-     * 修改菜品分类
+     * 修改分类
      */
     @PutMapping
-    @ApiOperation("修改菜品分类")
+    @ApiOperation("修改分类")
     public Result update(@RequestBody CategoryDTO categoryDTO){
         categoryService.update(categoryDTO);
         return Result.success();
     }
 
     /**
-     * 启用禁用菜品分类
+     * 启用禁用分类
      * @param status
      * @param id
      * @return
      */
     @PostMapping("/status/{status}")
-    @ApiOperation("启用禁用菜品分类")
+    @ApiOperation("启用禁用分类")
     public Result changeStatus(@PathVariable Integer status, @RequestParam Long id){
         categoryService.changeStatus(status, id);
         return Result.success();
     }
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result list(@RequestParam Integer type){
