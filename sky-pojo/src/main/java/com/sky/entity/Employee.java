@@ -46,13 +46,4 @@ public class Employee implements Serializable {
     private Long createUser;
 
     private Long updateUser;
-
-    public void init() {
-        this.createTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
-        this.status = StatusConstant.ENABLE;
-        this.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        this.setCreateUser(BaseContext.getCurrentId());
-        this.setUpdateUser(BaseContext.getCurrentId());
-    }
 }

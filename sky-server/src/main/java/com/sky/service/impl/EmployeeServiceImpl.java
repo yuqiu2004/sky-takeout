@@ -3,6 +3,7 @@ package com.sky.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
@@ -66,8 +67,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void add(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        employee.init();
+        Employee employee = Employee.builder()
+                        .status(StatusConstant.ENABLE)
+                        .password(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()))
+                        .build();
         BeanUtils.copyProperties(employeeDTO, employee);
         employeeMapper.insert(employee);
     }
@@ -87,8 +90,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = Employee.builder()
                 .id(id)
                 .status(status)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
         employeeMapper.update(employee);
     }
