@@ -22,6 +22,9 @@
   - chore : 构建过程或辅助工具的变动
 - subject：简短描述、不超过50个字符
 
+# TODO LIST:
+- [ ] 接口`/admin/setmeal/**` -> `/admin/setMeal/**`
+
 # 魔改部分
 1. 文件存储
    - 原版本使用oss服务进行文件存储 但是我已经有esc服务器了 不想再买oss 所以直接搭了一个minio服务
