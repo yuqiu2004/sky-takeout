@@ -13,6 +13,7 @@ import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
+import com.sky.utils.MinioUtil;
 import com.sky.vo.SetMealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Resource
     private SetMealDishMapper setMealDishMapper;
+
+    @Resource
+    private MinioUtil minioUtil;
 
     @Override
     public PageResult pageQuery(SetMealPageQueryDTO dto) {
@@ -66,6 +70,14 @@ public class SetMealServiceImpl implements SetMealService {
         }
         // 删除套餐
         setMealMapper.deleteBatch(ids);
+        // 删除对应的套餐图片
+        for (SetMeal setMeal : list) {
+            String image = setMeal.getImage();
+            int start = image.indexOf(minioUtil.getBucketName());
+            int end = image.lastIndexOf('?');
+            String objectName = image.substring(start, end);
+            minioUtil.remove(objectName);
+        }
         // 删除关系
         setMealDishMapper.deleteBySetMealIds(ids);
     }

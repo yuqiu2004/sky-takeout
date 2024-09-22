@@ -23,6 +23,13 @@ public class MinioUtil {
     private MinioClient minioClient;
 
     /**
+     * 获取桶名
+     */
+    public String getBucketName(){
+        return properties.getBucketName();
+    }
+
+    /**
      * 文件上传
      *
      * @param file 文件
