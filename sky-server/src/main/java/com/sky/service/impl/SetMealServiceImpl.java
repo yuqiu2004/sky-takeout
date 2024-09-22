@@ -2,11 +2,13 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetMealDTO;
 import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.entity.SetMeal;
 import com.sky.entity.SetMealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
@@ -42,7 +44,7 @@ public class SetMealServiceImpl implements SetMealService {
         BeanUtils.copyProperties(setMealDTO, setMeal);
         setMeal.setStatus(StatusConstant.DISABLE);
         setMealMapper.insert(setMeal);
-        List<SetMealDish> dishes = setMealDTO.getSetMealDishes();//建立关系
+        List<SetMealDish> dishes = setMealDTO.getSetmealDishes();//建立关系
         if(dishes != null && !dishes.isEmpty()){
             dishes.forEach(d->{
                 d.setSetMealId(setMeal.getId());
@@ -51,5 +53,20 @@ public class SetMealServiceImpl implements SetMealService {
             });
             setMealDishMapper.insertBatch(dishes);
         }
+    }
+
+    @Override
+    public void delete(List<Long> ids) {
+        // 发售的套餐不能删除
+        List<SetMeal> list = setMealMapper.selectByIds(ids);
+        for (SetMeal setMeal : list) {
+            if(setMeal.getStatus().equals(StatusConstant.ENABLE)){
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        }
+        // 删除套餐
+        setMealMapper.deleteBatch(ids);
+        // 删除关系
+        setMealDishMapper.deleteBySetMealIds(ids);
     }
 }

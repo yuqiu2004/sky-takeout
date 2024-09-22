@@ -4,6 +4,8 @@ import com.sky.dto.SetMealDTO;
 import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.result.PageResult;
 
+import java.util.List;
+
 public interface SetMealService {
 
     /**
@@ -17,4 +19,10 @@ public interface SetMealService {
      * @param setMealDTO
      */
     void add(SetMealDTO setMealDTO);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void delete(List<Long> ids);
 }

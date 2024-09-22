@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/setmeal")
@@ -38,6 +39,17 @@ public class SetMealController {
     @ApiOperation("新增套餐")
     public Result add(@RequestBody SetMealDTO setMealDTO){
         setMealService.add(setMealDTO);
+        return Result.success();
+    }
+
+    /**
+     * 删除套餐
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("删除套餐")
+    public Result delete(@RequestParam List<Long> ids){
+        setMealService.delete(ids);
         return Result.success();
     }
 }

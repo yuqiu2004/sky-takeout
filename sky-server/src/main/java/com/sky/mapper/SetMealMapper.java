@@ -8,6 +8,8 @@ import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface SetMealMapper {
 
@@ -24,4 +26,17 @@ public interface SetMealMapper {
      */
     @AutoFill(OperationType.INSERT)
     void insert(SetMeal setMeal);
+
+    /**
+     * 根据id获取套餐
+     * @param ids
+     * @return
+     */
+    List<SetMeal> selectByIds(List<Long> ids);
+
+    /**
+     * 根据id批量删除
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
 }
