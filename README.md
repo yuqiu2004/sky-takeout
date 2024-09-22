@@ -24,6 +24,7 @@
 
 # TODO LIST:
 - [ ] 接口`/admin/setmeal/**` -> `/admin/setMeal/**`
+- [ ] 删除权限？+ 连带删除
 
 # 魔改部分
 1. 文件存储
