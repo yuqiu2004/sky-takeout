@@ -84,10 +84,27 @@ public class DishController {
         return Result.success();
     }
 
+    /**
+     * 菜品状态修改
+     * @param id
+     * @return
+     */
     @PostMapping("/status")
     @ApiOperation("菜品状态修改")
     public Result status(@RequestParam Long id){
         dishService.updateDishStatusById(id);
         return Result.success();
+    }
+
+    /**
+     * 根据分类查询菜品
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据分类查询菜品")
+    public Result list(@RequestParam Long categoryId){
+        List<DishVO> list = dishService.list(categoryId);
+        return Result.success(list);
     }
 }
