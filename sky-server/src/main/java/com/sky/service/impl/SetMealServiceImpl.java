@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,5 +78,26 @@ public class SetMealServiceImpl implements SetMealService {
         }
         // 删除关系
         setMealDishMapper.deleteBySetMealIds(ids);
+    }
+
+    @Override
+    public void update(SetMealDTO setMealDTO) {
+        SetMeal setMeal = new SetMeal();
+        BeanUtils.copyProperties(setMealDTO, setMeal);
+        setMealMapper.update(setMeal);
+        List<SetMealDish> setmealDishes = setMealDTO.getSetmealDishes();
+        if(null != setmealDishes && !setmealDishes.isEmpty()){
+            // 删除原来的关联
+            ArrayList<Long> longs = new ArrayList<>();
+            longs.add(setMeal.getId());
+            setMealDishMapper.deleteBySetMealIds(longs);
+            // 插入新的关联
+            setMealDishMapper.insertBatch(setmealDishes);
+        }
+    }
+
+    @Override
+    public void status(Integer status, Long id) {
+        setMealMapper.updateStatus(status, id);
     }
 }

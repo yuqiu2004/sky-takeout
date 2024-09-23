@@ -52,4 +52,27 @@ public class SetMealController {
         setMealService.delete(ids);
         return Result.success();
     }
+
+    /**
+     * 修改套餐管理
+     * @param setMealDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改套餐")
+    public Result update(@RequestBody SetMealDTO setMealDTO){
+        setMealService.update(setMealDTO);
+        return Result.success();
+    }
+
+    /**
+     * 套餐停售起售
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("套餐停售起售")
+    public Result status(@PathVariable Integer status, @RequestParam Long id){
+        setMealService.status(status, id);
+        return Result.success();
+    }
 }
