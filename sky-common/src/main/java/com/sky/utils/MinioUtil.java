@@ -4,16 +4,20 @@ import com.sky.properties.MinioProperties;
 import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class MinioUtil {
 
     @Resource
@@ -103,11 +107,13 @@ public class MinioUtil {
      * @return
      */
     public boolean removeByPreUrl(String url){
-        int start = url.indexOf(properties.getBucketName());
+        int start = url.indexOf(properties.getBucketName()) + properties.getBucketName().length()+1;
         int end = url.lastIndexOf('?');
         String objectName = url.substring(start, end);
         try {
+            objectName = URLDecoder.decode(objectName, "UTF-8");
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(properties.getBucketName()).object(objectName).build());
+            log.info("删除 => " + objectName);
         }catch (Exception e){
             e.printStackTrace();
             return false;
