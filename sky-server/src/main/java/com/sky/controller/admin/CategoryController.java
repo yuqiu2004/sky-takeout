@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController
+@RestController("adminCategoryController")
 @Api("分类管理")
 @RequestMapping("/admin/category")
 @Slf4j

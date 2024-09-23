@@ -14,6 +14,7 @@ import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetMealService;
 import com.sky.utils.MinioUtil;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetMealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -104,5 +105,15 @@ public class SetMealServiceImpl implements SetMealService {
     public SetMealVO getById(String id) {
         SetMealVO setMealVO = setMealMapper.getById(id);
         return setMealVO;
+    }
+
+    @Override
+    public List<SetMeal> list(Long categoryId) {
+        return setMealMapper.list(categoryId);
+    }
+
+    @Override
+    public List<DishItemVO> dish(String id) {
+        return setMealMapper.getDishByCategoryId(id);
     }
 }

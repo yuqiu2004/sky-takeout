@@ -6,13 +6,15 @@ import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
 import com.sky.vo.SetMealVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController
+@RestController("adminSetMealController")
+@Api("套餐管理")
 @RequestMapping("/admin/setmeal")
 public class SetMealController {
 

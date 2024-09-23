@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
 import com.sky.entity.SetMeal;
 import com.sky.enumeration.OperationType;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -64,4 +65,23 @@ public interface SetMealMapper {
      */
     @Select("select * from set_meal where id = #{id}")
     SetMealVO getById(String id);
+
+    /**
+     * 根据分类id查询套餐
+     * @param categoryId
+     * @return
+     */
+    @Select("select * from set_meal where category_id = #{categoryId}")
+    List<SetMeal> list(Long categoryId);
+
+    /**
+     * 根据套餐id获取菜品
+     * @param id
+     * @return
+     */
+    @Select("select d.name, sd.copies, d.image, d.description from set_meal_dish sd " +
+            "left join dish d " +
+            "on d.id = sd.dish_id " +
+            "and sd.set_meal_id = #{id}")
+    List<DishItemVO> getDishByCategoryId(String id);
 }
