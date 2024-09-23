@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-@RestController
+@RestController("adminShopController")
 @Slf4j
 @RequestMapping("/admin/shop")
 @Api("管理端店铺管理")
@@ -40,6 +40,7 @@ public class ShopController {
     @ApiOperation("查询店铺状态")
     public Result getStatus(){
         Object status = redisTemplate.opsForValue().get(KeyConstant.SHOP_STATUS_KEY);
-        return Result.success(status);
+        int parseInt = Integer.parseInt((String) status);
+        return Result.success(parseInt);
     }
 }
