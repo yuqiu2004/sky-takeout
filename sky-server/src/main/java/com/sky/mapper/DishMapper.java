@@ -56,9 +56,9 @@ public interface DishMapper {
      * 修改菜品状态
      * @param id
      */
-    @Update("update dish set status = !status where id = #{id}")
+    @Update("update dish set status = #{status} where id = #{id}")
     @AutoFill(OperationType.UPDATE)
-    void updateStatusById(Long id);
+    void updateStatusById(Integer status, Long id);
 
     @Select("select * from dish where category_id = #{categoryId}")
     List<DishVO> list(Long categoryId);

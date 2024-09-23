@@ -44,7 +44,7 @@ public interface DishService {
      * 修改菜品状态
      * @param id
      */
-    void updateDishStatusById(Long id);
+    void updateDishStatusById(Integer status, Long id);
 
     /**
      * 根据分类查询菜品

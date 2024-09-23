@@ -89,10 +89,10 @@ public class DishController {
      * @param id
      * @return
      */
-    @PostMapping("/status")
+    @PostMapping("/status/{status}")
     @ApiOperation("菜品状态修改")
-    public Result status(@RequestParam Long id){
-        dishService.updateDishStatusById(id);
+    public Result status(@RequestParam Long id, @PathVariable Integer status){
+        dishService.updateDishStatusById(status, id);
         return Result.success();
     }
 
