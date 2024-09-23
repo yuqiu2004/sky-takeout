@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -88,9 +89,7 @@ public class SetMealServiceImpl implements SetMealService {
         List<SetMealDish> setmealDishes = setMealDTO.getSetmealDishes();
         if(null != setmealDishes && !setmealDishes.isEmpty()){
             // 删除原来的关联
-            ArrayList<Long> longs = new ArrayList<>();
-            longs.add(setMeal.getId());
-            setMealDishMapper.deleteBySetMealIds(longs);
+            setMealDishMapper.deleteBySetMealIds(Arrays.asList(setMeal.getId()));
             // 插入新的关联
             setMealDishMapper.insertBatch(setmealDishes);
         }
@@ -99,5 +98,11 @@ public class SetMealServiceImpl implements SetMealService {
     @Override
     public void status(Integer status, Long id) {
         setMealMapper.updateStatus(status, id);
+    }
+
+    @Override
+    public SetMealVO getById(String id) {
+        SetMealVO setMealVO = setMealMapper.getById(id);
+        return setMealVO;
     }
 }

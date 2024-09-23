@@ -7,6 +7,7 @@ import com.sky.enumeration.OperationType;
 import com.sky.vo.SetMealVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
@@ -56,4 +57,12 @@ public interface SetMealMapper {
     @AutoFill(OperationType.UPDATE)
     @Update("update set_meal set status = #{status} where id = #{id}")
     void updateStatus(Integer status, Long id);
+
+    /**
+     * 根据id查询套餐信息
+     * @param id
+     * @return
+     */
+    @Select("select * from set_meal where id = #{id}")
+    SetMealVO getById(String id);
 }

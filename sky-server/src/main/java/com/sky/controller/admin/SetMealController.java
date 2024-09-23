@@ -5,6 +5,7 @@ import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
+import com.sky.vo.SetMealVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +75,12 @@ public class SetMealController {
     public Result status(@PathVariable Integer status, @RequestParam Long id){
         setMealService.status(status, id);
         return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id获取套餐")
+    public Result getInfo(@PathVariable String id){
+        SetMealVO setMealVO = setMealService.getById(id);
+        return Result.success(setMealVO);
     }
 }
