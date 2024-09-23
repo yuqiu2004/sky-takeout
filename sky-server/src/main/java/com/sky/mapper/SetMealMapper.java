@@ -54,7 +54,6 @@ public interface SetMealMapper {
      * @param status
      * @param id
      */
-    @AutoFill(OperationType.UPDATE)
     @Update("update set_meal set status = #{status} where id = #{id}")
     void updateStatus(Integer status, Long id);
 
