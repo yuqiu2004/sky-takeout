@@ -91,6 +91,25 @@ public class MinioUtil {
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(properties.getBucketName()).object(objectName).build());
         } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 根据预览路径删除对象
+     * @param url
+     * @return
+     */
+    public boolean removeByPreUrl(String url){
+        int start = url.indexOf(properties.getBucketName());
+        int end = url.lastIndexOf('?');
+        String objectName = url.substring(start, end);
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder().bucket(properties.getBucketName()).object(objectName).build());
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -158,7 +177,7 @@ public class MinioUtil {
      *
      * @return Boolean
      */
-    public Boolean removeHotBucket(String bucketName) {
+    public Boolean removeBucket(String bucketName) {
         try {
             minioClient.removeBucket(RemoveBucketArgs.builder()
                     .bucket(bucketName)

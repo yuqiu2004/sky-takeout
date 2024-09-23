@@ -73,10 +73,7 @@ public class SetMealServiceImpl implements SetMealService {
         // 删除对应的套餐图片
         for (SetMeal setMeal : list) {
             String image = setMeal.getImage();
-            int start = image.indexOf(minioUtil.getBucketName());
-            int end = image.lastIndexOf('?');
-            String objectName = image.substring(start, end);
-            minioUtil.remove(objectName);
+            minioUtil.removeByPreUrl(image);
         }
         // 删除关系
         setMealDishMapper.deleteBySetMealIds(ids);

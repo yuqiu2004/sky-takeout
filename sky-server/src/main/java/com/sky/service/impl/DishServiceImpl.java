@@ -14,6 +14,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.utils.MinioUtil;
 import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class DishServiceImpl implements DishService {
 
     @Resource
     private SetMealDishMapper setMealDishMapper;
+
+    @Resource
+    private MinioUtil minioUtil;
 
     @Override
     public void addWithFlavor(DishDTO dishDTO) {
@@ -58,8 +62,8 @@ public class DishServiceImpl implements DishService {
     @Override
     public void deleteBatch(List<Long> ids) {
         //判断当前菜品是否能够删除---是否存在起售中的菜品？？
-        for (Long id : ids) {
-            Dish dish = dishMapper.getById(id);
+        List<Dish> list = dishMapper.getByIds(ids);
+        for (Dish dish : list) {
             if(dish.getStatus() == StatusConstant.ENABLE){
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
@@ -74,6 +78,9 @@ public class DishServiceImpl implements DishService {
         for (Long id : ids) {
             dishMapper.deleteById(id);
             dishFlavorMapper.deleteByDishId(id);
+        }
+        for (Dish dish : list) {
+            minioUtil.removeByPreUrl(dish.getImage());
         }
     }
 
