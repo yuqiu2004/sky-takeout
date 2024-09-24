@@ -29,9 +29,24 @@ public class ShoppingCartController {
         return Result.success();
     }
 
+    /**
+     * 查看购物车
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("查看购物车")
     public Result list(){
         return Result.success(shoppingCartService.list());
+    }
+
+    /**
+     * 清空购物车
+     * @return
+     */
+    @DeleteMapping("/clean")
+    @ApiOperation("清空购物车")
+    public Result clean(){
+        shoppingCartService.clear();
+        return Result.success();
     }
 }
