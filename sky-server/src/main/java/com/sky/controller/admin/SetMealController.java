@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.KeyConstant;
 import com.sky.dto.SetMealDTO;
 import com.sky.dto.SetMealPageQueryDTO;
 import com.sky.result.PageResult;
@@ -8,6 +9,7 @@ import com.sky.service.SetMealService;
 import com.sky.vo.SetMealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -40,6 +42,7 @@ public class SetMealController {
      */
     @PostMapping
     @ApiOperation("新增套餐")
+    @CacheEvict(cacheNames = KeyConstant.REDIS_PREFIX_SET_MEAL, key = "#setMealDTO.getCategoryId()")
     public Result add(@RequestBody SetMealDTO setMealDTO){
         setMealService.add(setMealDTO);
         return Result.success();
@@ -51,6 +54,7 @@ public class SetMealController {
      */
     @DeleteMapping
     @ApiOperation("删除套餐")
+    @CacheEvict(cacheNames = KeyConstant.REDIS_PREFIX_SET_MEAL, allEntries = true)
     public Result delete(@RequestParam List<Long> ids){
         setMealService.delete(ids);
         return Result.success();
@@ -63,6 +67,7 @@ public class SetMealController {
      */
     @PutMapping
     @ApiOperation("修改套餐")
+    @CacheEvict(cacheNames = KeyConstant.REDIS_PREFIX_SET_MEAL, allEntries = true)
     public Result update(@RequestBody SetMealDTO setMealDTO){
         setMealService.update(setMealDTO);
         return Result.success();
@@ -74,6 +79,7 @@ public class SetMealController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("套餐停售起售")
+    @CacheEvict(cacheNames = KeyConstant.REDIS_PREFIX_SET_MEAL, allEntries = true)
     public Result status(@PathVariable Integer status, @RequestParam Long id){
         setMealService.status(status, id);
         return Result.success();
