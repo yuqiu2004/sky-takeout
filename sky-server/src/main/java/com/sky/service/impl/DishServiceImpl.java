@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -118,5 +119,20 @@ public class DishServiceImpl implements DishService {
     public List<DishVO> list(Long categoryId) {
         List<DishVO> list = dishMapper.list(categoryId);
         return list;
+    }
+
+    @Override
+    public List<DishVO> listWithFlavor(Long categoryId) {
+        Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
+        List<Dish> list = dishMapper.list(dish);
+        ArrayList<DishVO> res = new ArrayList<>();
+        for (Dish d : list) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d, dishVO);
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
+            dishVO.setFlavors(flavors);
+            res.add(dishVO);
+        }
+        return res;
     }
 }

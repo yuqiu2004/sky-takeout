@@ -26,7 +26,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类id获取菜品")
     public Result list(@RequestParam Long categoryId){
-        List<DishVO> list = dishService.list(categoryId);
+        List<DishVO> list = dishService.listWithFlavor(categoryId);
         return Result.success(list);
     }
 
