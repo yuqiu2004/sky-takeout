@@ -28,7 +28,6 @@ public class ShopController {
     @PutMapping("/{status}")
     public Result status(@PathVariable String status){
         redisTemplate.opsForValue().set(KeyConstant.SHOP_STATUS_KEY, status);
-        // TODO: 这玩意配置怎么读取的？
         return Result.success();
     }
 
