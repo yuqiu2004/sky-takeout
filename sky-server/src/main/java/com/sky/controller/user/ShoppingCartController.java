@@ -28,4 +28,10 @@ public class ShoppingCartController {
         shoppingCartService.add(shoppingCartDTO);
         return Result.success();
     }
+
+    @GetMapping("/list")
+    @ApiOperation("查看购物车")
+    public Result list(){
+        return Result.success(shoppingCartService.list());
+    }
 }
