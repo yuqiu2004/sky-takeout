@@ -45,7 +45,7 @@ public interface AddressBookService {
 
     /**
      * 设置默认地址
-     * @param id
+     * @param addressBook
      */
     void setDefault(AddressBook addressBook);
 }
