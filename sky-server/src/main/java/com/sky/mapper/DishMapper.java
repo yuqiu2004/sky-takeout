@@ -61,7 +61,7 @@ public interface DishMapper {
     void updateStatusById(Integer status, Long id);
 
     @Select("select * from dish where category_id = #{categoryId}")
-    List<DishVO> list(Long categoryId);
+    List<DishVO> listDish(Long categoryId);
 
     /**
      * 根据ids批量查询
