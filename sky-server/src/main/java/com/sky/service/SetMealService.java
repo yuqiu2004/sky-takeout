@@ -47,7 +47,7 @@ public interface SetMealService {
      * @param id
      * @return
      */
-    SetMealVO getById(String id);
+    SetMeal getById(Long id);
 
     /**
      * 根据分类id查询套餐

@@ -102,9 +102,9 @@ public class SetMealServiceImpl implements SetMealService {
     }
 
     @Override
-    public SetMealVO getById(String id) {
-        SetMealVO setMealVO = setMealMapper.getById(id);
-        return setMealVO;
+    public SetMeal getById(Long id) {
+        SetMeal setMeal = setMealMapper.getById(id);
+        return setMeal;
     }
 
     @Override

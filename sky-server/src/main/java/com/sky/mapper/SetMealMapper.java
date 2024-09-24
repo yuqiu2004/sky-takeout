@@ -64,7 +64,7 @@ public interface SetMealMapper {
      * @return
      */
     @Select("select * from set_meal where id = #{id}")
-    SetMealVO getById(String id);
+    SetMeal getById(Long id);
 
     /**
      * 根据分类id查询套餐

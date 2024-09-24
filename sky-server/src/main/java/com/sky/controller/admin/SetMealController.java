@@ -3,6 +3,7 @@ package com.sky.controller.admin;
 import com.sky.constant.KeyConstant;
 import com.sky.dto.SetMealDTO;
 import com.sky.dto.SetMealPageQueryDTO;
+import com.sky.entity.SetMeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
@@ -87,8 +88,8 @@ public class SetMealController {
 
     @GetMapping("/{id}")
     @ApiOperation("根据id获取套餐")
-    public Result getInfo(@PathVariable String id){
-        SetMealVO setMealVO = setMealService.getById(id);
-        return Result.success(setMealVO);
+    public Result getInfo(@PathVariable Long id){
+        SetMeal setMeal = setMealService.getById(id);
+        return Result.success(setMeal);
     }
 }
