@@ -54,6 +54,12 @@ public class AddressBookServiceImpl implements AddressBookService {
 
     @Override
     public void setDefault(AddressBook addressBook) {
+        // 先将现在的default设置为非默认
+        AddressBook defaultAddress = getDefault();
+        if(defaultAddress != null){
+            defaultAddress.setIsDefault(0);
+            addressBookMapper.update(defaultAddress);
+        }
         addressBook.setIsDefault(1);
         addressBookMapper.update(addressBook);
     }
