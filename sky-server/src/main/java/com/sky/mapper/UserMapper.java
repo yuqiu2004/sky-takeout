@@ -23,4 +23,12 @@ public interface UserMapper {
      */
 //    @AutoFill(OperationType.INSERT) 只有createTime字段
     void insert(User user);
+
+    /**
+     * 根据id获取用户
+     * @param userId
+     * @return
+     */
+    @Select("select * from user where id = #{userId}")
+    User getById(Long userId);
 }
