@@ -5,9 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -17,6 +15,7 @@ import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
+import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
@@ -140,8 +139,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PageResult history(OrdersPageQueryDTO ordersPageQueryDTO) {
         PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
-        Orders orders = Orders.builder().userId(BaseContext.getCurrentId()).status(ordersPageQueryDTO.getStatus()).build();
-        Page<Orders> ordersPage = orderMapper.list(orders);
+        Page<Orders> ordersPage = orderMapper.list(ordersPageQueryDTO);
         List<Orders> result = ordersPage.getResult();
         List<OrderVO> list = new ArrayList<>();
         for (Orders order : result) {
@@ -204,5 +202,96 @@ public class OrderServiceImpl implements OrderService {
         }).collect(Collectors.toList());
         shoppingCartMapper.insertBatch(shoppingCarts);
 
+    }
+
+    @Override
+    public void cancel(OrdersCancelDTO ordersCancelDTO) throws Exception{
+        Orders orders = orderMapper.getById(ordersCancelDTO.getId());
+        // 如果已付款 需要进行退款
+        if(orders.getPayStatus().equals(Orders.PAY_STATUS_PAID)){
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    orders.getAmount(),
+//                    orders.getAmount()
+//            );
+            orders.setPayStatus(Orders.PAY_STATUS_REFUND);
+        }
+        orders.setCancelReason(ordersCancelDTO.getCancelReason());
+        orders.setCancelTime(LocalDateTime.now());
+        orders.setStatus(Orders.STATUS_CANCELLED);
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public OrderStatisticsVO statistic() {
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+        // 依次统计 待接单、待派送、派送中
+        Integer toBeConfirmed = orderMapper.countByStatus(Orders.STATUS_TO_BE_CONFIRMED);
+        Integer confirmed = orderMapper.countByStatus(Orders.STATUS_CONFIRMED);
+        Integer deliveryInProgress = orderMapper.countByStatus(Orders.STATUS_DELIVERY_IN_PROGRESS);
+        orderStatisticsVO.setToBeConfirmed(toBeConfirmed);
+        orderStatisticsVO.setConfirmed(confirmed);
+        orderStatisticsVO.setDeliveryInProgress(deliveryInProgress);
+        return orderStatisticsVO;
+    }
+
+    @Override
+    public void complete(Long id) {
+        Orders orders = orderMapper.getById(id);
+        if(null == orders || !orders.getStatus().equals(Orders.STATUS_DELIVERY_IN_PROGRESS)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        orders.setStatus(Orders.STATUS_COMPLETED);
+        orders.setDeliveryTime(LocalDateTime.now());
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void rejection(OrdersRejectionDTO ordersRejectionDTO) {
+        Orders order = orderMapper.getById(ordersRejectionDTO.getId());
+        if(null == order || !order.getStatus().equals(Orders.STATUS_TO_BE_CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 如果已付款 需要进行退款
+        if(order.getPayStatus().equals(Orders.PAY_STATUS_PAID)){
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    orders.getAmount(),
+//                    orders.getAmount()
+//            );
+            order.setPayStatus(Orders.PAY_STATUS_REFUND);
+        }
+        order.setStatus(Orders.STATUS_CANCELLED);
+        order.setRejectionReason(ordersRejectionDTO.getRejectionReason());
+        order.setCancelTime(LocalDateTime.now());
+        orderMapper.update(order);
+    }
+
+    @Override
+    public void confirm(OrdersConfirmDTO ordersConfirmDTO) {
+        Orders orders = Orders.builder()
+                .id(ordersConfirmDTO.getId())
+                .status(Orders.STATUS_CONFIRMED)
+                .build();
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void delivery(Long id) {
+        Orders order = orderMapper.getById(id);
+        if(null == order || !order.getStatus().equals(Orders.STATUS_CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        order.setStatus(Orders.STATUS_DELIVERY_IN_PROGRESS);
+        orderMapper.update(order);
+    }
+
+    @Override
+    public PageResult search(OrdersPageQueryDTO ordersPageQueryDTO) {
+        PageHelper.startPage(ordersPageQueryDTO.getPage(), ordersPageQueryDTO.getPageSize());
+        Page<Orders> page = orderMapper.list(ordersPageQueryDTO);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }
