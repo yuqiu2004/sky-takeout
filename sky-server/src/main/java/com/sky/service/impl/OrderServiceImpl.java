@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -186,5 +187,22 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
         orders.setStatus(Orders.STATUS_CANCELLED);
         orderMapper.update(orders);
+    }
+
+    @Override
+    public void repetition(Long id) {
+        Long currentId = BaseContext.getCurrentId();
+        Orders preOrder = orderMapper.getById(id);
+        List<OrderDetail> details = orderDetailMapper.getByOrderId(id);
+        // 将订单信息复制到购物车中
+        List<ShoppingCart> shoppingCarts = details.stream().map(d -> {
+            ShoppingCart shoppingCart = new ShoppingCart();
+            BeanUtils.copyProperties(d, shoppingCart, "id");
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            shoppingCart.setUserId(currentId);
+            return shoppingCart;
+        }).collect(Collectors.toList());
+        shoppingCartMapper.insertBatch(shoppingCarts);
+
     }
 }
