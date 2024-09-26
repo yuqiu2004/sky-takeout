@@ -34,6 +34,7 @@ public class Orders implements Serializable {
     public static final Integer PAY_STATUS_UN_PAID = 0;
     public static final Integer PAY_STATUS_PAID = 1;
     public static final Integer PAY_STATUS_REFUND = 2;
+    public static final String CANCEL_REASON_USER_CANCEL = "用户取消";
 
     private static final long serialVersionUID = 1L;
 

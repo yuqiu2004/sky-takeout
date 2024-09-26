@@ -164,4 +164,27 @@ public class OrderServiceImpl implements OrderService {
         orderVO.setOrderDetailList(details);
         return orderVO;
     }
+
+    @Override
+    public void cancel(Long id) throws Exception {
+        Orders orders = orderMapper.getById(id);
+        // 如果已经接单 抛出异常
+        if(orders.getStatus() > Orders.STATUS_TO_BE_CONFIRMED){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 如果已付款 需要进行退款
+        if(orders.getStatus().equals(Orders.STATUS_TO_BE_CONFIRMED)){
+//            weChatPayUtil.refund(
+//                    orders.getNumber(),
+//                    orders.getNumber(),
+//                    orders.getAmount(),
+//                    orders.getAmount()
+//            );
+            orders.setPayStatus(Orders.PAY_STATUS_REFUND);
+        }
+        orders.setCancelReason(Orders.CANCEL_REASON_USER_CANCEL);
+        orders.setCancelTime(LocalDateTime.now());
+        orders.setStatus(Orders.STATUS_CANCELLED);
+        orderMapper.update(orders);
+    }
 }
