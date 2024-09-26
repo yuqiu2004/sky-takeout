@@ -26,6 +26,7 @@
 - [ ] 接口`/admin/setmeal/**` -> `/admin/setMeal/**`
 - [x] 连带删除
 - [x] 删除权限
+- [ ] OrderServiceImpl中的魔法数字修改
 
 # 魔改部分
 1. 文件存储
