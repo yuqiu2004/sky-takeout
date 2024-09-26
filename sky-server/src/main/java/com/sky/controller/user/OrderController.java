@@ -1,7 +1,10 @@
 package com.sky.controller.user;
 
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.entity.Orders;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderPaymentVO;
@@ -42,5 +45,28 @@ public class OrderController {
     public Result payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) throws Exception {
         OrderPaymentVO orderPaymentVO = orderService.payment(ordersPaymentDTO);
         return Result.success(orderPaymentVO);
+    }
+
+    /**
+     * 查询历史订单
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    @GetMapping("/historyOrders")
+    @ApiOperation("查询历史订单")
+    public Result history(OrdersPageQueryDTO ordersPageQueryDTO){
+        PageResult pageResult = orderService.history(ordersPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    /**
+     * 查询订单明细
+     * @param id
+     * @return
+     */
+    @GetMapping("/orderDetail/{id}")
+    @ApiOperation("查询订单明细")
+    public Result detail(@PathVariable Long id){
+        return Result.success(orderService.detail(id));
     }
 }

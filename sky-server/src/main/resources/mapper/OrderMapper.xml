@@ -29,4 +29,12 @@
         </set>
         where id = #{id}
     </update>
+    <select id="list" resultType="com.sky.entity.Orders" parameterType="Orders">
+        select * from orders
+        <where>
+            <if test="userId != null">and user_id = #{userId}</if>
+            <if test="status != null">and status = #{status}</if>
+        </where>
+        order by number desc
+    </select>
 </mapper>
