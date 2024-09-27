@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 @Data
 public class BaiduProperties {
 
-    @Value("sky.shop.address")
-    private String shopAddress;
+    @Value("${sky.shop.address}")
+    private String address;
 
-    @Value("sky.baidu.ak")
+    @Value("${sky.baidu.ak}")
     private String ak;
 }

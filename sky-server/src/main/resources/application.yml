@@ -58,6 +58,6 @@ sky:
     appid: ${WECHAT_APPID}
     secret: ${WECHAT_SECRET}
   shop:
-    address: 湖北省武汉市武昌区
+    address: 湖北省武汉市武昌区八一路299号
   baidu:
     ak: ${BAIDU_AK}

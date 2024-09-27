@@ -311,9 +311,8 @@ public class OrderServiceImpl implements OrderService {
      * @param address
      */
     private void checkIfOutOfRange(String address) {
-        if(baiduProperties.getAk().equals("TTT")) return;
         Map map = new HashMap();
-        map.put("address",baiduProperties.getShopAddress());
+        map.put("address",baiduProperties.getAddress());
         map.put("output","json");
         map.put("ak",baiduProperties.getAk());
 
