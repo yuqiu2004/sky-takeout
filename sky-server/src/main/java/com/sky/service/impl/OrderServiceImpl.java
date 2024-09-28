@@ -315,6 +315,20 @@ public class OrderServiceImpl implements OrderService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Override
+    public void reminder(Long id) {
+        // 查询订单是否存在
+        Orders orders = orderMapper.getById(id);
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        Map map = new HashMap();
+        map.put("type", 2);//2代表用户催单
+        map.put("orderId", id);
+        map.put("content", "订单号：" + orders.getNumber());
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
+    }
+
     /**
      * 检查客户的收货地址是否超出配送范围
      * @param address

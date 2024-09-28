@@ -97,4 +97,10 @@ public interface OrderService {
      * @return
      */
     PageResult search(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     * 用户催单
+     * @param id
+     */
+    void reminder(Long id);
 }
