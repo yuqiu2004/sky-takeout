@@ -22,6 +22,7 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private BaiduProperties baiduProperties;
+
+    @Resource
+    private WebSocketServer webSocketServer;
 
     @Override
     public OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO) {
@@ -145,6 +149,11 @@ public class OrderServiceImpl implements OrderService {
                 .checkoutTime(LocalDateTime.now())
                 .build();
         orderMapper.update(orders);
+        Map map = new HashMap();
+        map.put("type", 1);
+        map.put("orderId", orders.getId());
+        map.put("content", "订单号：" + outTradeNo);
+        webSocketServer.sendToAllClient(JSON.toJSONString(map)); // 推送给管理端
     }
 
     @Override
