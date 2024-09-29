@@ -31,4 +31,17 @@ public class ReportController {
                            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
         return Result.success(reportService.turnover(begin, end));
     }
+
+    /**
+     * 用户统计
+     * @param begin
+     * @param end
+     * @return
+     */
+    @GetMapping("/userStatistics")
+    @ApiOperation("用户统计")
+    public Result user(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                       @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+        return Result.success(reportService.user(begin, end));
+    }
 }
