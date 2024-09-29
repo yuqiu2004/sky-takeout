@@ -55,4 +55,15 @@ public class ReportController {
                         @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
         return Result.success(reportService.order(begin, end));
     }
+
+    /**
+     * 销量前十
+     * @return
+     */
+    @GetMapping("/top10")
+    @ApiOperation("销量前十")
+    public Result top10(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                      @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+        return Result.success(reportService.top10(begin, end));
+    }
 }
