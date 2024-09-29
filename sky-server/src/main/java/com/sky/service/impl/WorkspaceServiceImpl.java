@@ -59,6 +59,30 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     @Override
+    public BusinessDataVO businessData(LocalDate begin, LocalDate end) {
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(begin, LocalTime.MAX);
+        // 查询当天的相关数据
+        Integer newUser = userMapper.countNewUser(beginTime, endTime);
+        if(newUser == null) newUser = 0;
+        Integer countOrder = orderMapper.countOrder(beginTime, endTime, null);
+        if(countOrder == null) countOrder = 0;
+        Integer validOrder = orderMapper.countOrder(beginTime, endTime, Orders.STATUS_COMPLETED);
+        if(validOrder == null) validOrder = 0;
+        Double sum = orderMapper.getSumDuring(Orders.STATUS_COMPLETED, beginTime, endTime);
+        if(sum == null) sum = 0.0;
+        Double unitPrice = validOrder == 0 ? 0.0 : sum/validOrder.doubleValue();
+        Double completionRate = countOrder == 0 ? 0.0 : validOrder.doubleValue()/countOrder.doubleValue();
+        return BusinessDataVO.builder()
+                .newUsers(newUser)
+                .orderCompletionRate(completionRate)
+                .turnover(sum)
+                .validOrderCount(validOrder)
+                .unitPrice(unitPrice)
+                .build();
+    }
+
+    @Override
     public OrderOverViewVO overviewOrders() {
         LocalDateTime beginTime =  LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endTime =  LocalDateTime.now().with(LocalTime.MAX);
