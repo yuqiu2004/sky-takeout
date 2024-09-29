@@ -5,6 +5,7 @@ import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.OrderOverViewVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +44,24 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .turnover(sum)
                 .validOrderCount(validOrder)
                 .unitPrice(unitPrice)
+                .build();
+    }
+
+    @Override
+    public OrderOverViewVO overviewOrders() {
+        LocalDateTime beginTime =  LocalDateTime.now().with(LocalTime.MIN);
+        LocalDateTime endTime =  LocalDateTime.now().with(LocalTime.MAX);
+        Integer allOrders = orderMapper.countOrder(beginTime, endTime, null);
+        Integer waitingOrders = orderMapper.countOrder(beginTime, endTime, Orders.STATUS_TO_BE_CONFIRMED);
+        Integer deliveredOrders = orderMapper.countOrder(beginTime, endTime, Orders.STATUS_DELIVERY_IN_PROGRESS);
+        Integer completedOrders = orderMapper.countOrder(beginTime, endTime, Orders.STATUS_COMPLETED);
+        Integer cancelledOrders = orderMapper.countOrder(beginTime, endTime, Orders.STATUS_CANCELLED);
+        return OrderOverViewVO.builder()
+                .allOrders(allOrders)
+                .waitingOrders(waitingOrders)
+                .deliveredOrders(deliveredOrders)
+                .completedOrders(completedOrders)
+                .cancelledOrders(cancelledOrders)
                 .build();
     }
 }

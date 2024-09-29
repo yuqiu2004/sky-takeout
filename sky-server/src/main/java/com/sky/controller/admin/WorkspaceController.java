@@ -27,4 +27,15 @@ public class WorkspaceController {
     public Result businessData(){
         return Result.success(workspaceService.businessData());
     }
+
+    /**
+     * 订单浏览
+     * @return
+     */
+    @GetMapping("/overviewOrders")
+    @ApiOperation("订单浏览")
+    public Result overviewOrders(){
+        return Result.success(workspaceService.overviewOrders());
+    }
+
 }
