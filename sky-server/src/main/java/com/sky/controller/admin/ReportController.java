@@ -44,4 +44,15 @@ public class ReportController {
                        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
         return Result.success(reportService.user(begin, end));
     }
+
+    /**
+     * 订单统计
+     * @return
+     */
+    @GetMapping("/ordersStatistics")
+    @ApiOperation("订单统计")
+    public Result order(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+        return Result.success(reportService.order(begin, end));
+    }
 }
