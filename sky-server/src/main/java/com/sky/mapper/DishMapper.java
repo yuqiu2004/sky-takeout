@@ -76,4 +76,12 @@ public interface DishMapper {
      * @return
      */
     List<Dish> list(Dish dish);
+
+    /**
+     * 根据状态统计数量
+     * @param disable
+     * @return
+     */
+    @Select("select count(*) from dish where status = #{status}")
+    Integer countByStatus(Integer disable);
 }

@@ -84,4 +84,12 @@ public interface SetMealMapper {
             "on d.id = sd.dish_id " +
             "and sd.set_meal_id = #{id}")
     List<DishItemVO> getDishByCategoryId(String id);
+
+    /**
+     * 根据状态统计
+     * @param disable
+     * @return
+     */
+    @Select("select count(*) from set_meal where status = #{status}")
+    Integer countByStatus(Integer disable);
 }

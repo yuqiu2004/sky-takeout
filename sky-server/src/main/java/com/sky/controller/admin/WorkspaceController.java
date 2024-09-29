@@ -38,4 +38,24 @@ public class WorkspaceController {
         return Result.success(workspaceService.overviewOrders());
     }
 
+    /**
+     * 菜品浏览
+     * @return
+     */
+    @GetMapping("/overviewDishes")
+    @ApiOperation("菜品浏览")
+    public Result overviewDishes(){
+        return Result.success(workspaceService.overviewDishes());
+    }
+
+    /**
+     * 套餐浏览
+     * @return
+     */
+    @GetMapping("/overviewSetmeals")
+    @ApiOperation("套餐浏览")
+    public Result overviewSetmeal(){
+        return Result.success(workspaceService.overviewSetmeals());
+    }
+
 }

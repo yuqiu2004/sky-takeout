@@ -1,11 +1,16 @@
 package com.sky.service.impl;
 
+import com.sky.constant.StatusConstant;
 import com.sky.entity.Orders;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.SetMealMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
+import com.sky.vo.SetMealOverViewVO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +26,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Resource
     private OrderMapper orderMapper;
+
+    @Resource
+    private DishMapper dishMapper;
+
+    @Resource
+    private SetMealMapper setMealMapper;
 
     @Override
     public BusinessDataVO businessData() {
@@ -62,6 +73,26 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .deliveredOrders(deliveredOrders)
                 .completedOrders(completedOrders)
                 .cancelledOrders(cancelledOrders)
+                .build();
+    }
+
+    @Override
+    public DishOverViewVO overviewDishes() {
+        Integer dis = dishMapper.countByStatus(StatusConstant.DISABLE);
+        Integer sold = dishMapper.countByStatus(StatusConstant.ENABLE);
+        return DishOverViewVO.builder()
+                .discontinued(dis)
+                .sold(sold)
+                .build();
+    }
+
+    @Override
+    public SetMealOverViewVO overviewSetmeals() {
+        Integer dis = setMealMapper.countByStatus(StatusConstant.DISABLE);
+        Integer sold = setMealMapper.countByStatus(StatusConstant.ENABLE);
+        return SetMealOverViewVO.builder()
+                .discontinued(dis)
+                .sold(sold)
                 .build();
     }
 }
