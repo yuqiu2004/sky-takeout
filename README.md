@@ -23,13 +23,17 @@
 - subject：简短描述、不超过50个字符
 
 # TODO LIST:
-- [ ] 接口`/admin/setmeal/**` -> `/admin/setMeal/**`
 - [x] 连带删除
 - [x] 删除权限
-- [ ] OrderServiceImpl中的魔法数字修改
 - [x] 百度api认证通过与测试
+- [ ] 接口`/admin/setmeal/**` -> `/admin/setMeal/**`
+- [ ] OrderServiceImpl中的魔法数字修改
+- [ ] 改功能 => 暂时没想出来
 - [ ] 秒杀功能
-- 
+- [ ] 超卖问题解决
+- [ ] 优惠券功能
+- [ ] 引入消息队列 => 订单处理、物流通知、库存管理
+- [ ] 评价功能
 
 # 魔改部分
 1. 文件存储
