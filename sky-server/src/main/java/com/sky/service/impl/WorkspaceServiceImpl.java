@@ -48,10 +48,11 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         if(validOrder == null) validOrder = 0;
         Double sum = orderMapper.getSumDuring(Orders.STATUS_COMPLETED, beginTime, endTime);
         if(sum == null) sum = 0.0;
+        Double orderCompletionRate = countOrder == 0 ? 0.0 : validOrder.doubleValue()/countOrder.doubleValue();
         Double unitPrice = validOrder == 0 ? 0.0 : sum/validOrder.doubleValue();
         return BusinessDataVO.builder()
                 .newUsers(newUser)
-                .orderCompletionRate(validOrder.doubleValue()/countOrder.doubleValue())
+                .orderCompletionRate(orderCompletionRate)
                 .turnover(sum)
                 .validOrderCount(validOrder)
                 .unitPrice(unitPrice)
