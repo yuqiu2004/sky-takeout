@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController("userSetMealController")
 @Slf4j
-@RequestMapping("/user/setmeal")
+@RequestMapping("/user/setMeal")
 @Api("套餐管理")
 public class SetMealController {
 

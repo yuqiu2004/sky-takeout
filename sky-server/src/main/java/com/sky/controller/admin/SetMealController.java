@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController("adminSetMealController")
 @Api("套餐管理")
-@RequestMapping("/admin/setmeal")
+@RequestMapping("/admin/setMeal")
 public class SetMealController {
 
     @Resource
