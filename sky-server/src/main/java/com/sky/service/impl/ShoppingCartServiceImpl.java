@@ -46,7 +46,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 cart.setAmount(dish.getPrice());
                 cart.setImage(dish.getImage());
             }else{
-                SetMeal setMeal = setMealMapper.getById(cart.getSetmealId());
+                SetMeal setMeal = setMealMapper.getById(cart.getSetMealId());
                 cart.setImage(setMeal.getImage());
                 cart.setName(setMeal.getName());
                 cart.setAmount(setMeal.getPrice());

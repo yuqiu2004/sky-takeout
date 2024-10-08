@@ -51,7 +51,7 @@ public class SetMealServiceImpl implements SetMealService {
         BeanUtils.copyProperties(setMealDTO, setMeal);
         setMeal.setStatus(StatusConstant.DISABLE);
         setMealMapper.insert(setMeal);
-        List<SetMealDish> dishes = setMealDTO.getSetmealDishes();//建立关系
+        List<SetMealDish> dishes = setMealDTO.getSetMealDishes();//建立关系
         if(dishes != null && !dishes.isEmpty()){
             dishes.forEach(d->{
                 d.setSetMealId(setMeal.getId());
@@ -87,7 +87,7 @@ public class SetMealServiceImpl implements SetMealService {
         SetMeal setMeal = new SetMeal();
         BeanUtils.copyProperties(setMealDTO, setMeal);
         setMealMapper.update(setMeal);
-        List<SetMealDish> setMealDishes = setMealDTO.getSetmealDishes();
+        List<SetMealDish> setMealDishes = setMealDTO.getSetMealDishes();
         if(null != setMealDishes && !setMealDishes.isEmpty()){
             // 删除原来的关联
             setMealDishMapper.deleteBySetMealIds(Arrays.asList(setMeal.getId()));
