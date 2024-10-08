@@ -44,10 +44,11 @@ public interface SetMealService {
 
     /**
      * 根据id获取套餐信息
+     *
      * @param id
      * @return
      */
-    SetMeal getById(Long id);
+    SetMealVO getById(Long id);
 
     /**
      * 根据分类id查询套餐

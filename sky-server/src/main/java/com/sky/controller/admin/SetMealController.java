@@ -89,7 +89,7 @@ public class SetMealController {
     @GetMapping("/{id}")
     @ApiOperation("根据id获取套餐")
     public Result getInfo(@PathVariable Long id){
-        SetMeal setMeal = setMealService.getById(id);
+        SetMealVO setMeal = setMealService.getById(id);
         return Result.success(setMeal);
     }
 }

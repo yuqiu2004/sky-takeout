@@ -20,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,9 +101,13 @@ public class SetMealServiceImpl implements SetMealService {
     }
 
     @Override
-    public SetMeal getById(Long id) {
+    public SetMealVO getById(Long id) {
         SetMeal setMeal = setMealMapper.getById(id);
-        return setMeal;
+        SetMealVO res = new SetMealVO();
+        BeanUtils.copyProperties(setMeal, res);
+        List<SetMealDish> list = setMealDishMapper.getBySetMealId(setMeal.getId());
+        res.setSetMealDishes(list);
+        return res;
     }
 
     @Override
