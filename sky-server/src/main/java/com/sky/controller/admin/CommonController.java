@@ -34,8 +34,7 @@ public class CommonController {
     public Result upload(MultipartFile file){
         try {
             String objectName = minioUtil.upload(file);
-            String path = minioUtil.preview(objectName);
-            return Result.success(path);
+            return Result.success(objectName);
         }catch (Exception e){
             e.printStackTrace();
             return Result.error("上传文件失败!");

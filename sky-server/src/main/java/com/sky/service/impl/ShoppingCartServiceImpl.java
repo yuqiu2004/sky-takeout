@@ -9,6 +9,7 @@ import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.ShoppingCartService;
+import com.sky.utils.MinioUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Resource
     private SetMealMapper setMealMapper;
+
+    @Resource
+    private MinioUtil minioUtil;
 
     @Override
     public void add(ShoppingCartDTO shoppingCartDTO) {
@@ -61,7 +65,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public List<ShoppingCart> list() {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setUserId(BaseContext.getCurrentId());
-        return shoppingCartMapper.list(shoppingCart);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        list.forEach( l-> l.setImage(minioUtil.preview(l.getImage())));
+        return list;
     }
 
     @Override

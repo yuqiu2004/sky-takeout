@@ -17,6 +17,7 @@ import com.sky.properties.BaiduProperties;
 import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.HttpClientUtil;
+import com.sky.utils.MinioUtil;
 import com.sky.utils.WeChatPayUtil;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
@@ -61,6 +62,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private WebSocketServer webSocketServer;
+
+    @Resource
+    private MinioUtil minioUtil;
 
     @Override
     public OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO) {
@@ -180,6 +184,7 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(order, orderVO);
         // 获取明细
         List<OrderDetail> details = orderDetailMapper.getByOrderId(id);
+        details.forEach(orderDetail -> orderDetail.setImage(minioUtil.preview(orderDetail.getImage())));
         orderVO.setOrderDetailList(details);
         return orderVO;
     }

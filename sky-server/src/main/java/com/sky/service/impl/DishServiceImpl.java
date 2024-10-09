@@ -57,7 +57,9 @@ public class DishServiceImpl implements DishService {
         PageHelper.startPage(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
         //public class Page<E> extends ArrayList<E> implements Closeable 难怪这玩意可以接收结果
         Page<DishVO> page = dishMapper.pageQuery(pageQueryDTO);
-        return new PageResult(page.getPageSize(), page.getResult());
+        List<DishVO> pageResult = page.getResult();
+        pageResult.forEach(p -> p.setImage(minioUtil.preview(p.getImage())));
+        return new PageResult(page.getPageSize(), pageResult);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class DishServiceImpl implements DishService {
         DishVO dishVO = new DishVO();
         BeanUtils.copyProperties(dish, dishVO);
         dishVO.setFlavors(list);
+        dishVO.setImage(minioUtil.preview(dishVO.getImage()));
         return dishVO;
     }
 
@@ -131,6 +134,7 @@ public class DishServiceImpl implements DishService {
             BeanUtils.copyProperties(d, dishVO);
             List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
             dishVO.setFlavors(flavors);
+            dishVO.setImage(minioUtil.preview(dishVO.getImage()));
             res.add(dishVO);
         }
         return res;

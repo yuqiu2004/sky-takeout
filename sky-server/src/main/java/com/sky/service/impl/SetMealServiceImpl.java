@@ -41,7 +41,9 @@ public class SetMealServiceImpl implements SetMealService {
         SetMeal setMeal = new SetMeal();
         BeanUtils.copyProperties(dto, setMeal);
         Page<SetMealVO> page = setMealMapper.queryWithCategoryName(setMeal);
-        return new PageResult(page.getTotal(), page.getResult());
+        List<SetMealVO> pageResult = page.getResult();
+        pageResult.forEach( p -> p.setImage(minioUtil.preview(p.getImage())));
+        return new PageResult(page.getTotal(), pageResult);
     }
 
     @Override
@@ -107,16 +109,21 @@ public class SetMealServiceImpl implements SetMealService {
         BeanUtils.copyProperties(setMeal, res);
         List<SetMealDish> list = setMealDishMapper.getBySetMealId(setMeal.getId());
         res.setSetMealDishes(list);
+        res.setImage(minioUtil.preview(res.getImage()));
         return res;
     }
 
     @Override
     public List<SetMeal> list(Long categoryId) {
-        return setMealMapper.list(categoryId);
+        List<SetMeal> meals = setMealMapper.list(categoryId);
+        meals.forEach( m -> m.setImage(minioUtil.preview(m.getImage())));
+        return meals;
     }
 
     @Override
     public List<DishItemVO> dish(String id) {
-        return setMealMapper.getDishByCategoryId(id);
+        List<DishItemVO> itemVOS = setMealMapper.getDishByCategoryId(id);
+        itemVOS.forEach(i->i.setImage(minioUtil.preview(i.getImage())));
+        return itemVOS;
     }
 }
