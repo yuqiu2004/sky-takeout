@@ -52,9 +52,9 @@ public class WorkspaceController {
      * 套餐浏览
      * @return
      */
-    @GetMapping("/overviewSetmeals")
+    @GetMapping("/overviewSetMeals")
     @ApiOperation("套餐浏览")
-    public Result overviewSetmeal(){
+    public Result overviewSetMeal(){
         return Result.success(workspaceService.overviewSetmeals());
     }
 
