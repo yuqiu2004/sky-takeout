@@ -1,17 +1,11 @@
 package com.sky.entity;
 
-import com.sky.constant.PasswordConstant;
-import com.sky.constant.StatusConstant;
-import com.sky.context.BaseContext;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.util.DigestUtils;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Builder
